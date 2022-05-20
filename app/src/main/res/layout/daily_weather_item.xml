@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <data>
+        <import type="android.view.View"></import>
+        <variable
+            name="daily"
+            type="com.stetsiuk.weatherapi.repository.net.onecall.model.daily.Daily" />
+        <variable
+            name="dt"
+            type="java.lang.String" />
+        <variable
+            name="sunrise"
+            type="java.lang.String" />
+        <variable
+            name="sunset"
+            type="java.lang.String" />
+        <variable
+            name="moonrise"
+            type="java.lang.String" />
+        <variable
+            name="moonset"
+            type="java.lang.String" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="5dp"
+        android:layout_marginTop="5dp"
+        android:background="@drawable/weather_item_background"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_weight="4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvDate"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="16dp"
+                    android:layout_margin="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text='@{dt}'>
+                </TextView>
+
+                <TextView
+                    android:id="@+id/tvDescription"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="16dp"
+                    android:layout_margin="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text='@{daily.weather[0].description}'>
+                </TextView>
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvPop"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="2"
+                android:text= '@{String.format("Pop: %d%%", Math.round(daily.pop*100))}'/>
+
+            <ImageView
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:id="@+id/iwWeatherIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+            </ImageView>
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvMaxTemp"
+                    android:layout_weight="1"
+                    android:gravity="bottom"
+                    android:textSize="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text='@{String.format("%d°", Math.round(daily.temp.max))}'
+                    />
+
+                <TextView
+                    android:id="@+id/tvMinTemp"
+                    android:layout_weight="1"
+                    android:textSize="16dp"
+                    android:gravity="top"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text='@{String.format("%d°", Math.round(daily.temp.min))}'/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/dailyForecastlongInfo"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="10dp"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/tvMornTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text='@{String.format("Morn:\n%d°\nfl:%d°", Math.round(daily.temp.morn), Math.round(daily.feels_like.morn))}' />
+
+                <TextView
+                    android:id="@+id/tvDayTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="16dp"
+                    android:layout_weight="1"
+                    android:text='@{String.format("Day:\n%d°\nfl:%d°", Math.round(daily.temp.day), Math.round(daily.feels_like.day))}' />
+
+                <TextView
+                    android:id="@+id/tvEveTemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="16dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text='@{String.format("Eve:\n%d°\nfl:%d°", Math.round(daily.temp.eve), Math.round(daily.feels_like.eve))}'/>
+
+                <TextView
+                    android:id="@+id/NightTemp"
+                    android:gravity="center"
+                    android:textSize="16dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text='@{String.format("Night:\n%d°\nfl:%d°", Math.round(daily.temp.night), Math.round(daily.feels_like.night))}' />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:orientation="horizontal">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Sunrise/sunset:" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Moonrise/moonset:" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Pressure: " />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Humidity: " />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Dew point:" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Wind speed/gust/deg:" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Clouds:" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="Uvi:" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:visibility='@{Math.round(daily.rain)==0?View.GONE:View.VISIBLE}'
+                    android:text="Rain:" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:visibility='@{Math.round(daily.snow)==0?View.GONE:View.VISIBLE}'
+                    android:text="Snow:" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvSunriseSunset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text='@{String.format("%s/%s", sunrise, sunset)}' />
+
+                <TextView
+                    android:id="@+id/tvMoonriseMoonset"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text='@{String.format("%s/%s", moonrise, moonset)}' />
+
+                <TextView
+                    android:id="@+id/tvPressure"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text='@{String.format("%dhPa", daily.pressure)}' />
+
+                <TextView
+                    android:id="@+id/tvHumidity"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text='@{String.format("%d%%", daily.humidity)}' />
+
+                <TextView
+                    android:id="@+id/tvDevPoint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text='@{String.format("%d", Math.round(daily.dew_point))}' />
+
+                <TextView
+                    android:id="@+id/tvWindSpeedGustDeg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text='@{String.format("%d/%d/%d", Math.round(daily.wind_speed), Math.round(daily.wind_gust), Math.round(daily.wind_deg))}' />
+
+                <TextView
+                    android:id="@+id/tvClouds"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text='@{String.format("%d%%", daily.clouds)}' />
+
+                <TextView
+                    android:id="@+id/tvUvi"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text= '@{String.format("%d", Math.round(daily.uvi))}'/>
+
+                <TextView
+                    android:id="@+id/tvRain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:visibility='@{Math.round(daily.rain)==0?View.GONE:View.VISIBLE}'
+                    android:text='@{String.format("%dmm", Math.round(daily.rain))}' />
+
+                <TextView
+                    android:id="@+id/tvSnow"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:visibility='@{Math.round(daily.snow)==0?View.GONE:View.VISIBLE}'
+                    android:text='@{String.format("%dmm", Math.round(daily.snow))}' />
+            </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</layout>
