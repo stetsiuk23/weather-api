@@ -49,7 +49,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         btnRefresh.setOnClickListener{
-            requestCurrentLocation()
+            refreshLocation()
             mainViewModel.refresh()
             searchView.setQuery("", false)
             searchView.clearFocus()
@@ -97,12 +97,16 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.errorMessage.observe(this, {
             Log.e("weatherE", it)
-            Toast.makeText(this, "Here is some problem with loading data!", Toast.LENGTH_LONG).show()
+            Toast.makeText(this, "Here is some problem with loading data!", Toast.LENGTH_SHORT).show()
         })
     }
 
     override fun onStart() {
         super.onStart()
+        refreshLocation()
+    }
+
+    private fun refreshLocation(){
         if(mainViewModel.currentSelectedGeocoding.value==null){
             requestCurrentLocation(true)
         } else requestCurrentLocation()
