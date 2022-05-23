@@ -12,9 +12,10 @@ import androidx.activity.viewModels
 import androidx.core.app.ActivityCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.location.FusedLocationProviderClient
-import com.stetsiuk.weatherapi.repository.net.geocoding.model.Geocoding
-import com.stetsiuk.weatherapi.ui.DailyForecastAdapter
-import com.stetsiuk.weatherapi.ui.SearchResultsAdapter
+import com.stetsiuk.weatherapi.adapters.DailyForecastAdapter
+import com.stetsiuk.weatherapi.models.geocoding.Geocoding
+import com.stetsiuk.weatherapi.adapters.SearchResultsAdapter
+import com.stetsiuk.weatherapi.viewmodels.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -39,11 +40,6 @@ class MainActivity : AppCompatActivity() {
         rwForecast = findViewById(R.id.rwForecast)
         searchView = findViewById(R.id.searchViewNames)
 
-        /*
-        mainViewModel.lastUserLocation.observe(this, {
-            Log.d("weatherD", "User location was updated")
-        })*/
-
         btnCurrentLocation.setOnClickListener{
             requestCurrentLocation(true)
         }
@@ -51,11 +47,11 @@ class MainActivity : AppCompatActivity() {
         btnRefresh.setOnClickListener{
             refreshLocation()
             mainViewModel.refresh()
-            searchView.setQuery("", false)
+            searchView.setQuery(String(), false)
             searchView.clearFocus()
         }
 
-        val searchAdapter = SearchResultsAdapter(object: SearchResultsAdapter.OnItemClick{
+        val searchAdapter = SearchResultsAdapter(object: SearchResultsAdapter.OnItemClickListener{
             override fun onItemClick(geocoding: Geocoding) {
                 mainViewModel.setCurrentGeocoding(geocoding)
             }
@@ -71,8 +67,8 @@ class MainActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(p0: String?): Boolean {
-                if(p0!=null) {
-                    if(p0==""){ mainViewModel.clearSearchResults() }
+                p0?.let{
+                    if(p0.isEmpty()) mainViewModel.clearSearchResults()
                     else mainViewModel.getGeocodingsByName(p0)
                 }
                 return false
@@ -81,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         })
 
         mainViewModel.currentSelectedGeocoding.observe(this, {
-            searchView.setQuery("", false)
+            searchView.setQuery(String(), false)
             searchView.clearFocus()
             mainViewModel.getOneCallByCoordinates(it.lat, it.lon)
             searchView.queryHint = it.name
@@ -97,7 +93,7 @@ class MainActivity : AppCompatActivity() {
 
         mainViewModel.errorMessage.observe(this, {
             Log.e("weatherE", it)
-            Toast.makeText(this, "Here is some problem with loading data!", Toast.LENGTH_SHORT).show()
+            Toast.makeText(this, resources.getString(R.string.ui_err_msg), Toast.LENGTH_SHORT).show()
         })
     }
 
@@ -109,7 +105,9 @@ class MainActivity : AppCompatActivity() {
     private fun refreshLocation(){
         if(mainViewModel.currentSelectedGeocoding.value==null){
             requestCurrentLocation(true)
-        } else requestCurrentLocation()
+        } else {
+            requestCurrentLocation()
+        }
     }
 
     private fun requestCurrentLocation(setAsCurrent: Boolean = false) {
@@ -129,7 +127,7 @@ class MainActivity : AppCompatActivity() {
             )
         }
         location.lastLocation.addOnSuccessListener {
-            if (it != null){
+            it?.let {
                 mainViewModel.setLastUserLocation(it)
                 if(setAsCurrent) mainViewModel.setCurrentGeocodingWithLatLon(it.latitude, it.longitude)
             }

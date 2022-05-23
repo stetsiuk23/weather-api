@@ -2,4 +2,20 @@
     <string name="app_name">Weather API</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="not_success_response">Response is not success!</string>
+    <string name="ui_err_msg">Here is some problem with loading data!</string>
+    <string name="main_date_pattern">EEE, d MMM</string>
+    <string name="time_pattern">HH:mm</string>
+    <string name="btn_current_location">Current location</string>
+    <string name="btn_refresh">Refresh</string>
+    <string name="tv_snow">Snow:</string>
+    <string name="tv_rain">Rain:</string>
+    <string name="tv_uvi">Uvi:</string>
+    <string name="tv_clouds">Clouds:</string>
+    <string name="tv_wind_speed_gust_deg">Wind speed/gust/deg:</string>
+    <string name="tv_dew_point">Dew point:</string>
+    <string name="tv_humidity">Humidity:</string>
+    <string name="tv_pressure">Pressure:</string>
+    <string name="tv_moonrise_moonset">Moonrise/moonset:</string>
+    <string name="tv_sunrise_sunset">Sunrise/sunset:</string>
 </resources>
